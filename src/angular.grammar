@@ -1,0 +1,55 @@
+@top Content {
+  (Text | Interpolation | Entity | InvalidEntity)+
+}
+
+@skip { space } {
+  @top Attribute {
+    (BoundAttributeName { "[" Identifier ("." Identifier)* "]" | "[" "(" Identifier ("." Identifier)* ")" "]" } |
+     ReferenceName { "#" Identifier })
+      (Is ExpressionAttributeValue { scriptAttributeValue })? |
+    (EventName { "(" Identifier ")" } | DirectiveName { "*" Identifier })
+      (Is StatementAttributeValue { scriptAttributeValue })? |
+    AttributeName { Identifier } (Is AttributeValue)?
+  }
+}
+
+AttributeValue {
+  '"' (attributeContentDouble | Entity | InvalidEntity | Interpolation)* '"' |
+  "'" (attributeContentSingle | Entity | InvalidEntity | Interpolation)* "'"
+}
+
+scriptAttributeValue {
+  '"' AttributeInterpolation { scriptAttributeContentDouble } '"' |
+  "'" AttributeInterpolation { scriptAttributeContentSingle } "'"
+}
+
+Interpolation {
+  "{{" InterpolationContent? "}}"
+}
+
+@external tokens text from "./tokens" { Text }
+
+@external tokens attrSingle from "./tokens" { attributeContentSingle }
+@external tokens attrDouble from "./tokens" { attributeContentDouble }
+
+@external tokens scriptAttrSingle from "./tokens" { scriptAttributeContentSingle }
+@external tokens scriptAttrDouble from "./tokens" { scriptAttributeContentDouble }
+
+@tokens {
+  Entity { "&" ![; ]+ ";" }
+
+  InvalidEntity { "&" }
+
+  InterpolationContent { (![}] | "}" ![}]) InterpolationContent? }
+
+  Identifier { (":" | "-" | @asciiLetter | @digit | "_" | $[\u00C0-\u{EFFFF}])+ }
+
+  space { (" " | "\t" | "\r" | "\n")+ }
+
+  Is { "=" }
+
+  "{{" "}}" "[" "]" "(" ")"
+  "*" "#"
+}
+
+@detectDelim
