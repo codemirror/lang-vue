@@ -1,0 +1,78 @@
+@top Content {
+  (Text | Interpolation | Entity)+
+}
+
+@skip { space } {
+  @top Attribute {
+    (VueAttributeName (":" Identifier)? ("." Identifier)* |
+      (":" | "@") Identifier ("." Identifier)*) (Is ScriptAttributeValue)? |
+    AttributeName (Is AttributeValue)?
+  }
+}
+
+AttributeValue {
+  '"' (attrContentDouble | attrEntityDouble)* endAttributeDouble |
+  "'" (attrContentSingle | attrEntitySingle)* endAttributeSingle
+}
+
+ScriptAttributeValue {
+  '"' scriptAttrContentDouble? endScriptAttrDouble |
+  "'" scriptAttrContentSingle? endScriptAttrSingle
+}
+
+Interpolation {
+  interpolationStart InterpolationContent? interpolationEnd
+}
+
+@local tokens {
+  interpolationEnd[@name="}}"] { "}}" }
+  @else InterpolationContent
+}
+
+@local tokens {
+  interpolationStart { "{{" }
+  Entity { "&" (![; ]+ ";")? }
+  @else Text
+}
+
+@local tokens {
+  endScriptAttrSingle { "'" }
+  @else scriptAttrContentSingle[@name=AttributeScript]
+}
+
+@local tokens {
+  endScriptAttrDouble { '"' }
+  @else scriptAttrContentDouble[@name=AttributeScript]
+}
+
+@local tokens {
+  endAttributeSingle { "'" }
+  attrEntitySingle[@name=Entity] { "&" (![; ]+ ";")? }
+  @else attrContentSingle
+}
+
+@local tokens {
+  endAttributeDouble { '"' }
+  attrEntityDouble[@name=Entity] { "&" (![; ]+ ";")? }
+  @else attrContentDouble
+}
+
+@tokens {
+  AttributeName { (":" | "-" | @asciiLetter | @digit | "_" | $[\u00C0-\u{EFFFF}])+ }
+
+  VueAttributeName { "v-" @asciiLetter+ }
+
+  @precedence { VueAttributeName AttributeName }
+
+  @precedence { ":" AttributeName }
+
+  Identifier { (@asciiLetter | @digit | "_" | $[\u00C0-\u{EFFFF}])+ }
+
+  space { (" " | "\t" | "\r" | "\n")+ }
+
+  Is { "=" }
+
+  "{{" "}}" "@" ":"
+}
+
+@detectDelim
