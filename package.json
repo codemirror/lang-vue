@@ -1,6 +1,6 @@
 {
   "name": "@codemirror/lang-vue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vue template support for the CodeMirror code editor",
   "scripts": {
     "test": "cm-runtests",
