@@ -41,7 +41,10 @@ const textMixed = {parser: textParser}, attrMixed = {parser: attrParser}
 /// A language provider for Vue templates.
 export const vueLanguage = LRLanguage.define({
   name: "vue",
-  parser: htmlLanguage.parser.configure({wrap: parseMixed(mixVue)}),
+  parser: htmlLanguage.parser.configure({
+    dialect: "selfClosing",
+    wrap: parseMixed(mixVue)
+  }),
   languageData: {
     closeBrackets: {brackets: ["{", '"']}
   }
