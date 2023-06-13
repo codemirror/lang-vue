@@ -1,3 +1,13 @@
+## 0.1.2 (2023-06-13)
+
+### Bug fixes
+
+HTML support extensions now work in Vue mode.
+
+### New features
+
+`vue` now allows a base HTML configuration to be passed in.
+
 ## 0.1.1 (2023-01-16)
 
 ### Bug fixes
