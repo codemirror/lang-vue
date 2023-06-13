@@ -73,7 +73,7 @@ export function vue(config: {
       throw new RangeError("The base option must be the result of calling html(...)")
     base = config.base
   }
-  return new LanguageSupport(makeVue(base.language as LRLanguage), [
+  return new LanguageSupport(base.language == baseHTML.language ? vueLanguage : makeVue(base.language as LRLanguage), [
     base.support,
     base.language.data.of({closeBrackets: {brackets: ["{", '"']}})
   ])
