@@ -1,5 +1,5 @@
 import {LRLanguage, LanguageSupport} from "@codemirror/language"
-import {htmlLanguage} from "@codemirror/lang-html"
+import {html} from "@codemirror/lang-html"
 import {javascriptLanguage} from "@codemirror/lang-javascript"
 import {styleTags, tags as t} from "@lezer/highlight"
 import {parseMixed, SyntaxNodeRef, Input} from "@lezer/common"
@@ -38,17 +38,17 @@ const attrParser = baseParser.configure({
 
 const textMixed = {parser: textParser}, attrMixed = {parser: attrParser}
 
-/// A language provider for Vue templates.
-export const vueLanguage = LRLanguage.define({
-  name: "vue",
-  parser: htmlLanguage.parser.configure({
+const baseHTML = html()
+
+function makeVue(base: LRLanguage) {
+  return base.configure({
     dialect: "selfClosing",
     wrap: parseMixed(mixVue)
-  }),
-  languageData: {
-    closeBrackets: {brackets: ["{", '"']}
-  }
-})
+  }, "vue")
+}
+
+/// A language provider for Vue templates.
+export const vueLanguage = makeVue(baseHTML.language as LRLanguage)
 
 function mixVue(node: SyntaxNodeRef, input: Input) {
   switch (node.name) {
@@ -61,6 +61,20 @@ function mixVue(node: SyntaxNodeRef, input: Input) {
 }
 
 /// Vue template support.
-export function vue() {
-  return new LanguageSupport(vueLanguage)
+export function vue(config: {
+  /// Provide an HTML language configuration to use as a base. _Must_
+  /// be the result of calling `html()` from `@codemirror/lang-html`,
+  /// not just any `LanguageSupport` object.
+  base?: LanguageSupport
+} = {}) {
+  let base = baseHTML
+  if (config.base) {
+    if (config.base.language.name != "html" || !(config.base.language instanceof LRLanguage))
+      throw new RangeError("The base option must be the result of calling html(...)")
+    base = config.base
+  }
+  return new LanguageSupport(makeVue(base.language as LRLanguage), [
+    base.support,
+    base.language.data.of({closeBrackets: {brackets: ["{", '"']}})
+  ])
 }
