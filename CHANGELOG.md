@@ -1,3 +1,9 @@
+## 0.1.3 (2023-12-28)
+
+### Bug fixes
+
+Tag interpolations and attributes as isolating for the purpose of bidirectional text.
+
 ## 0.1.2 (2023-06-13)
 
 ### Bug fixes
