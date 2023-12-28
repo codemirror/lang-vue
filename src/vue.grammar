@@ -10,17 +10,17 @@
   }
 }
 
-AttributeValue {
+AttributeValue[isolate] {
   '"' (attrContentDouble | attrEntityDouble)* endAttributeDouble |
   "'" (attrContentSingle | attrEntitySingle)* endAttributeSingle
 }
 
-ScriptAttributeValue {
+ScriptAttributeValue[isolate] {
   '"' scriptAttrContentDouble? endScriptAttrDouble |
   "'" scriptAttrContentSingle? endScriptAttrSingle
 }
 
-Interpolation {
+Interpolation[isolate] {
   interpolationStart InterpolationContent? interpolationEnd
 }
 
