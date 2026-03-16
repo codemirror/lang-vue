@@ -2,7 +2,7 @@
 
 # @codemirror/lang-vue [![NPM version](https://img.shields.io/npm/v/@codemirror/lang-vue.svg)](https://www.npmjs.org/package/@codemirror/lang-vue)
 
-[ [**WEBSITE**](https://codemirror.net/) | [**ISSUES**](https://github.com/codemirror/dev/issues) | [**FORUM**](https://discuss.codemirror.net/c/next/) | [**CHANGELOG**](https://github.com/codemirror/lang-vue/blob/main/CHANGELOG.md) ]
+[ [**WEBSITE**](https://codemirror.net/) | [**ISSUES**](https://github.com/codemirror/dev/issues) | [**FORUM**](https://discuss.codemirror.net//) | [**CHANGELOG**](https://github.com/codemirror/lang-vue/blob/main/CHANGELOG.md) ]
 
 This package implements Vue template support for the
 [CodeMirror](https://codemirror.net/) code editor.
