@@ -1,3 +1,5 @@
+**This repository has moved to https://code.haverbeke.berlin/codemirror/lang-vue**
+
 <!-- NOTE: README.md is generated from src/README.md -->
 
 # @codemirror/lang-vue [![NPM version](https://img.shields.io/npm/v/@codemirror/lang-vue.svg)](https://www.npmjs.org/package/@codemirror/lang-vue)
